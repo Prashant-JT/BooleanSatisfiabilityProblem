@@ -18,7 +18,7 @@ entry.place(x = 52, y = 75) # posicion en el frame
 
 def compute():
     label = Label(frame, text = formula.get(), font = (14)) # obtiene el texto del textbox
-    label.place(x = 100, y = 100) # posicion en el frame (pixeles respecto al borde izq, pixeles respecto al borde superior)
+    label.place(x = 480, y = 280) # posicion en el frame (pixeles respecto al borde izq, pixeles respecto al borde superior)
 
 button_compute = Button(frame, text = "Calcula", command = compute) # cuando se pulse el boton, llama al metodo compute
 button_compute.place(x = 370, y = 70) # posicion en el frame
