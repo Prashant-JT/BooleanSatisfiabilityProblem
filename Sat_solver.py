@@ -25,7 +25,7 @@ def check_solution(values, clauses):
 
     sol = True
     for unit in clauses:
-        aux = True
+        aux = False
         for i in unit:
             aux = aux or convertBool(values, i)
         sol = sol and aux
