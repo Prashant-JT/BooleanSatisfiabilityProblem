@@ -53,6 +53,11 @@ def brute_force(clauses):
     return False, None
 
 
+"""
+---------DPLL--------
+"""
+
+
 def bcp(clauses, unit):
     clausX = []
     for cl in clauses:
@@ -128,6 +133,23 @@ def dpll(clauses, assign):
     return solution
 
 
+def dpll_aux(clauses):
+    literals = set([abs(y) for x in clauses for y in x])
+    n = max(literals) + 1
+
+    res = dpll(clauses, [])
+    if res:
+        res.extend([x for x in range(1, n) if x not in res and -x not in res])
+        res.sort(key=lambda x: abs(x))
+        return True, dict(zip(range(1, n), [True if x > 0 else False for x in res]))
+    else:
+        return False, None
+
+"""
+--------FIN DPLL-------
+"""
+
+
 def solver_SAT_CDCL(clauses):
 
     literals = set([abs(y) for x in clauses for y in x])
@@ -154,14 +176,7 @@ def algorythms(alg, clauses, literals):
     if alg == 1:
         return brute_force(clauses)
     elif alg == 2:
-        res = dpll(clauses, [])
-        n = max(literals)+1
-        if res:
-            res.extend([x for x in range(1, n) if x not in res and -x not in res])
-            res.sort(key=lambda x: abs(x))
-            return True, dict(zip(range(1, n), [True if x > 0 else False for x in res]))
-        else:
-            return False, None
+        return dpll_aux(clauses)
     else:
         return solver_SAT_CDCL(clauses)
 
