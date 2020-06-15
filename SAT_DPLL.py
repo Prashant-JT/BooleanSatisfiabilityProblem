@@ -1,7 +1,7 @@
 import itertools
 import random
-
 from pysat.solvers import Glucose3
+from ortools.sat.python import cp_model
 import time
 from IPython.display import FileLink
 import csv
@@ -42,7 +42,7 @@ def check_solution(values, clauses):
 
 
 def brute_force(clauses):
-    literals = set([abs(y) for x in clauses for y in x])
+    literals = getLiterals(clauses)
     n = len(literals)
 
     for seq in itertools.product([True, False], repeat=n):
@@ -134,26 +134,131 @@ def dpll(clauses, assign):
 
 
 def dpll_aux(clauses):
-    literals = set([abs(y) for x in clauses for y in x])
-    n = max(literals) + 1
+    literals = getLiterals(clauses)
 
     res = dpll(clauses, [])
     if res:
-        res.extend([x for x in range(1, n) if x not in res and -x not in res])
+        res.extend([x for x in literals if x not in res and -x not in res])
         res.sort(key=lambda x: abs(x))
-        return True, dict(zip(range(1, n), [True if x > 0 else False for x in res]))
+        return True, dict(zip(literals, [True if x > 0 else False for x in res]))
     else:
         return False, None
+
 
 """
 --------FIN DPLL-------
 """
 
 
-def solver_SAT_CDCL(clauses):
+def mip_SAT(clauses):
+    n = max(getLiterals(clauses)) + 1
+    literals = range(1, n)
+    boolLit = [0]
 
-    literals = set([abs(y) for x in clauses for y in x])
-    n = max(literals)+1
+    model = cp_model.CpModel()
+
+    for x in literals:
+        boolLit.append(model.NewBoolVar(str(x)))
+
+    for cl in clauses:
+        cl_rep = [boolLit[a] if a > 0 else boolLit[abs(a)].Not() for a in cl]
+        model.AddBoolOr(cl_rep)
+
+    solver = cp_model.CpSolver()
+    status = solver.Solve(model)
+
+    if status == cp_model.OPTIMAL or status == cp_model.FEASIBLE:
+        sol = {}
+        boolLit.remove(0)
+        for x, y in zip(literals, boolLit):
+            sol[x] = True if solver.Value(y) == 1 else False
+        if status == cp_model.OPTIMAL:
+            return True, sol
+        else:
+            return False, sol
+    else:
+        return False, None
+
+
+"""
+--------WALKSAT (LOCAL-SEARCH)---------
+"""
+
+
+def checkSAT(cl, assign):
+    for c in cl:
+        if assign[abs(c)] and c > 0:
+            return True
+        elif not assign[abs(c)] and c < 0:
+            return True
+    return False
+
+
+def check(clauses, assign):
+    for cl in clauses:
+        if not checkSAT(cl, assign):
+            return False
+    return True
+
+
+def walksat(clauses, max_flips, p, limit):
+    literals = getLiterals(clauses)
+    assign = {s: random.choice([True, False]) for s in literals}
+
+    while limit:
+        for _ in range(max_flips):
+
+            if check(clauses, assign):
+                return assign
+
+            cl = random.choice(clauses)
+            while not checkSAT(cl, assign):
+                cl = random.choice(clauses)
+
+            r = random.uniform(0, 1) < p
+            if r:
+                lit = abs(random.choice(cl))
+                assign[lit] = not assign[lit]
+            else:
+                flip = 0
+                satClauses = 0
+                for symb in cl:
+                    mod = assign.copy()
+                    mod[abs(symb)] = not mod[abs(symb)]
+
+                    j = 0
+                    for claus in clauses:
+                        if checkSAT(claus, mod):
+                            j += 1
+
+                    if j > satClauses:
+                        satClauses = j
+                        flip = abs(symb)
+
+                assign[flip] = not assign[flip]
+        limit -= 1
+    return False
+
+
+def walksat_aux(clauses):
+    max_flips = 50000
+    p = 0.6
+    res = walksat(clauses, max_flips, p, 5)
+
+    if res:
+        return True, res
+    else:
+        return False, None
+
+
+"""
+-------FIN WALKSAT---------
+"""
+
+
+def solver_SAT_CDCL(clauses):
+    literals = getLiterals(clauses)
+    n = max(literals) + 1
 
     g = Glucose3()
     for cl in clauses:
@@ -168,25 +273,35 @@ def solver_SAT_CDCL(clauses):
 -------------FIN ALGORITMOS------------
 """
 
-algos = 2
-algs = ["Fuerza bruta", "DPLL", "SOLVER_SAT(CDCL)"]
+algos = 4
+algs = ["Brute Force", "DPLL", "WALKSAT (LOCAL_SEARCH)", "MIP with ORTOOLS", "SOLVER_SAT(CDCL)"]
 
 
-def algorythms(alg, clauses, literals):
-    if alg == 1:
+def getLiterals(clauses):
+    return set([abs(y) for x in clauses for y in x])
+
+
+def algorythms(clauses):
+    global algos
+    if algos == 1:
         return brute_force(clauses)
-    elif alg == 2:
+    elif algos == 2:
         return dpll_aux(clauses)
+    elif algos == 3:
+        return walksat_aux(clauses)
+    elif algos == 4:
+        return mip_SAT(clauses)
     else:
         return solver_SAT_CDCL(clauses)
 
 
-def process(clauses, literals, alg):
+def process(clauses):
+    global algos
     start = time.time()
-    val, dictSol = algorythms(alg, clauses, literals)
+    val, dictSol = algorythms(clauses)
     end = time.time()
 
-    obj = "UNSATISFIABLE"
+    obj = "UNSATISFIABLE" if algos != 3 else "UNKNOWN"
 
     if val:
         sol = [0] * len(dictSol)
@@ -195,15 +310,17 @@ def process(clauses, literals, alg):
 
         obj = check_solution(sol, clauses)
 
-    aux = True if obj == "SATISFIABLE" else False
-    assert val == aux
+    if not val and dictSol:
+        return obj, end - start
+    else:
+        aux = True if obj == "SATISFIABLE" else False
+        assert val == aux
 
-    return obj, end-start
+        return obj, end - start
 
 
 def parserFile(datas):
     claus = []
-    literals = set()
     claus_var = {}
     for line in datas:
         comment = re.match("p.+", line)
@@ -220,8 +337,7 @@ def parserFile(datas):
         if clause:
             auxS = [int(i) for i in clause.group().split()]
             claus.append(auxS)
-            literals.update((abs(x) for x in auxS))
-    return claus, literals, claus_var
+    return claus, claus_var
 
 
 def main():
@@ -237,15 +353,15 @@ def main():
             full_name = dirname + '/' + filename
             with open(full_name, 'r') as input_data_file:
                 data_lines = [a.rstrip("\r\n") for a in input_data_file]
-                clauses, liter, info = parserFile(data_lines)
+                clauses, info = parserFile(data_lines)
 
                 assert len(clauses) == info.get("clausulas"), "Parseo incorrecto->clausulas"
-                print("Total variables calculadas:", len(liter), "| Total variables dichas:", info.get("variables"))
+                print("Total variables calculadas:", len(getLiterals(clauses)), "| Total variables dichas:", info.get("variables"))
 
-                value, times = process(clauses, liter, algos)
+                value, times = process(clauses)
 
                 print("Fichero -->", filename, '(', dirname[7:], ") | Valor -->", value)
-                print("Algoritmo requerido:", algs[algos-1], "| Tiempo requerido -->", times)
+                print("Algoritmo requerido:", algs[algos - 1], "| Tiempo requerido -->", times)
                 print("------------------------------------------------------------------------")
                 str_output.append([filename, value])
 
