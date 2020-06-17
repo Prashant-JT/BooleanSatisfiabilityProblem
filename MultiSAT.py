@@ -54,9 +54,8 @@ def main(ifile, nameFile, algot):
                     assert len(clauses) == info.get("clausulas"), "Parseo incorrecto->clausulas"
 
                     value, time, dictSol = process(clauses, algot)
-
-                    str_output.append([file, value, times])
-                times += time
+                    times += time
+                    str_output.append([full_name, value, times])
 
         print("Se ha generado el fichero de salida:", nameFileRes)
         submission_generation(nameFileRes, str_output)
@@ -74,10 +73,13 @@ def main(ifile, nameFile, algot):
 
         print("Se ha generado el fichero de salida:", nameFileRes)
         submission_generation(nameFileRes, str_output)
-        return value, times, dictSol
+        if value == "UNSATISFIABLE":
+            return False, times, dictSol
+        else:
+            return True, times, dictSol
     else:
         print("a")
 
 
-if __name__ == '__main__':
-    main(2, "./data/SAT/uf20-01.cnf", 5)
+#if __name__ == '__main__':
+#   main(2, "./data/SAT/uf20-01.cnf", 5)
