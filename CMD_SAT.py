@@ -1,9 +1,35 @@
-import csv
-import os
-import sys
+import pip
 import Functions.Parser as Parser
 from Functions.ProcessFile import process
-from IPython.display import FileLink
+
+
+def install(package):
+    pip.main(['install', package])
+
+
+try:
+    from IPython.display import FileLink
+except ImportError:
+    print('Ipython is not installed, installing it now!')
+    install('IPython')
+
+try:
+    import csv
+except ImportError:
+    print('csv is not installed, installing it now!')
+    install('csv')
+
+try:
+    import os
+except ImportError:
+    print('os is not installed, installing it now!')
+    install('os')
+
+try:
+    import sys
+except ImportError:
+    print('sys is not installed, installing it now!')
+    install('sys')
 
 algs = ["Brute Force", "WALKSAT (LOCAL_SEARCH)", "DPLL", "Constraint_Programming (Ortools)", "CDCL (GLucose3)"]
 
@@ -31,7 +57,7 @@ def printVerbose(file, info, clauses, times, algot, value):
 def main(argv):
     file, algot, outF, verbose, is_file, equals = Parser.parserArgs(argv)
 
-    str_output = [["Filename", "Value", "Time in seconds"]]
+    str_output = [[algs[algot-1]], ["Filename", "Value", "Time in seconds"]]
 
     def processRead(files):
         with open(files, 'r') as input_data_file:
@@ -50,7 +76,7 @@ def main(argv):
             if value and equals:
                 str_res = [["Variable", "Value"]]
                 for key_, value_ in dictSol.items():
-                    str_res.append([key_, value_])
+                    str_res.append([str(key_) + " = " + str(value_)])
                 print("Se ha generado el fichero de resultados:", outF + '_res.csv')
                 submission_generation(outF + '_res.csv', str_res)
 

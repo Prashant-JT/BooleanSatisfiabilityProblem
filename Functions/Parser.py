@@ -43,6 +43,8 @@ def parserArgs(argv):
             sys.exit(0)
         elif opt == "-i":
             directory, file = checkFile(arg)
+            if directory is None:
+                sys.exit(1)
         elif opt == "-a":
             if not arg.isdigit():
                 print("Algoritmo inexistente, los algoritmos deben ser numéricos")
