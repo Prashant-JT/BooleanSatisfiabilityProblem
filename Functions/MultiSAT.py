@@ -55,6 +55,8 @@ def main(ifile, nameFile, algot):
 
     if ifile == 2:
         is_file, file = Parser.checkFile(nameFile)
+        if file is None:
+            return None, None, None
 
         if not is_file:
             times = 0
@@ -90,6 +92,8 @@ def main(ifile, nameFile, algot):
                 str_output.append([file, value, times])
     else:
         litDict, clauses = Parser.parserFormula(nameFile)
+        if litDict is None and clauses is None:
+            return None, None, None
         value, times, dictS = process(clauses, algot)
         str_output.append([nameFile, value, times])
         if dictS:

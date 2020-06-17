@@ -72,7 +72,7 @@ def checkFile(file):
     elif os.path.isdir(file):
         return False, file
     print("El fichero o directorio no existe")
-    sys.exit(1)
+    return None, None
 
 
 def parserFile(datas):
@@ -99,19 +99,26 @@ def parserFile(datas):
 def parserFormula(formula):
     litDict = {}
     clauses = []
-    cont = 1
-    for cl in formula.split(','):
-        if cl.find('(') != 0 and cl.find(')') != len(cl)-1:
-            print("Formula incorrecta, cada clausula debe estar entre '()'")
-            sys.exit(1)
-        auxC = []
-        for a in cl[1:-1].split('+'):
-            b = a.replace("!", "")
-            if b not in litDict:
-                litDict[b] = cont
-                cont += 1
-            auxC.append(litDict[b] if a[0] != "!" else -litDict[b])
-        clauses.append(auxC)
+    if formula.find("(", 1) != -1 and "," not in formula:
+        print("Formula incorrecta, los espaciadores son ','")
+        return None, None
+    try:
+        cont = 1
+        for cl in formula.split(','):
+            if cl.find('(') != 0 and cl.find(')') != len(cl)-1:
+                print("Formula incorrecta, cada clausula debe estar entre '()'")
+                return None, None
+            auxC = []
+            for a in cl[1:-1].split('+'):
+                b = a.replace("!", "")
+                if b not in litDict:
+                    litDict[b] = cont
+                    cont += 1
+                auxC.append(litDict[b] if a[0] != "!" else -litDict[b])
+            clauses.append(auxC)
+    except Exception:
+        print("Clausula invalida, vuelva a intentarlo")
+        return None, None
 
     return litDict, clauses
 

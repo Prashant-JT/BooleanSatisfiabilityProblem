@@ -97,6 +97,8 @@ class GUI:
         self.show_result(sat, time, result)
 
     def show_result(self, sat, time, result):
+        if time is None:
+            return
         if isinstance(result, dict):
             # unico fichero sat o formula personalizada
             if sat:
@@ -117,7 +119,7 @@ class GUI:
         else:
             if sat == False:
                 # unico fichero y unsat
-                label = Label(self.master, text="El fichero introducido no es satisfacible")  # texto
+                label = Label(self.master, text="La formula introducida no es satisfacible")  # texto
                 label.place(x=390, y=295)  # posicion en el master (pixeles respecto al borde izq, pixeles respecto al borde superior)
             else:
                 # directorio
@@ -130,5 +132,5 @@ class GUI:
 
 if __name__ == "__main__":
     root = Tk()
-    GUI = GUI(root)
+    GUI(root)
     root.mainloop()  # para que una ventana siga en ejecucion tiene que estar en un bucle infinito
