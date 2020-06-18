@@ -8,8 +8,8 @@ def install(package):
 try:
     from pysat.solvers import Glucose3
 except ImportError:
-    print('usertools is not installed, installing it now!')
-    install('python-sat[pblib,aiger]')
+    print('python-sat is not installed, installing it now!')
+    install('python-sat')
 
 
 class CDCL:
