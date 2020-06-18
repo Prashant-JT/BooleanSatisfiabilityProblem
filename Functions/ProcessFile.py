@@ -6,7 +6,7 @@ from Algos.WalkSat import WalkSat
 from Algos.CDCL import CDCL
 
 
-def install(package):
+def install_packages(package):
     pip.main(['install', package])
 
 
@@ -14,7 +14,7 @@ try:
     import time
 except ImportError:
     print('time is not installed, installing it now!')
-    install('time')
+    install_packages('time')
 
 
 def convertBool(values, ax):

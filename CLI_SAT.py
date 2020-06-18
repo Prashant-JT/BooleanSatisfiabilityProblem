@@ -3,7 +3,7 @@ import Functions.Parser as Parser
 from Functions.ProcessFile import process
 
 
-def install(package):
+def install_packages(package):
     pip.main(['install', package])
 
 
@@ -11,25 +11,25 @@ try:
     from IPython.display import FileLink
 except ImportError:
     print('Ipython is not installed, installing it now!')
-    install('IPython')
+    install_packages('IPython')
 
 try:
     import csv
 except ImportError:
     print('csv is not installed, installing it now!')
-    install('csv')
+    install_packages('csv')
 
 try:
     import os
 except ImportError:
     print('os is not installed, installing it now!')
-    install('os')
+    install_packages('os')
 
 try:
     import sys
 except ImportError:
     print('sys is not installed, installing it now!')
-    install('sys')
+    install_packages('sys')
 
 algs = ["Brute Force", "WALKSAT (LOCAL_SEARCH)", "DPLL", "Constraint_Programming (Ortools)", "CDCL (GLucose3)"]
 

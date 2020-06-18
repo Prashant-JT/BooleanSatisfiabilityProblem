@@ -1,7 +1,7 @@
 import pip
 
 
-def install(package):
+def install_packages(package):
     pip.main(['install', package])
 
 
@@ -9,10 +9,10 @@ try:
     import re, sys, os, getopt
 except ImportError:
     print('re & os is not installed, installing it now!')
-    install('re')
-    install('sys')
-    install('os')
-    install('getopt')
+    install_packages('re')
+    install_packages('sys')
+    install_packages('os')
+    install_packages('getopt')
 
 
 def helpMessage():

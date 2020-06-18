@@ -118,6 +118,7 @@ class GUI:
                 textbox = Text(self.master, width=25, height=10) # texarea donde se mostrará las asignaciones
                 textbox.place(x=390, y=120)
                 textbox.delete(1.0, END)
+                textbox.configure(state='disable')  # dehabilita la edicion
 
         else:
             if sat == False:
@@ -127,6 +128,7 @@ class GUI:
                 textbox = Text(self.master, width=25, height=10) # texarea donde se mostrará las asignaciones
                 textbox.place(x=390, y=120)
                 textbox.delete(1.0, END)
+                textbox.configure(state='disable')  # dehabilita la edicion
             else:
                 # directorio
                 label = Label(self.master, text="El resultado se encuentra en el fichero")
@@ -136,6 +138,7 @@ class GUI:
                 textbox = Text(self.master, width=25, height=10) # texarea donde se mostrará las asignaciones
                 textbox.place(x=390, y=120)
                 textbox.delete(1.0, END)
+                textbox.configure(state='disable')  # dehabilita la edicion
         self.label4.config(text=str(time) + " segundos")  # actualiza el tiempo de ejecucion
 
 

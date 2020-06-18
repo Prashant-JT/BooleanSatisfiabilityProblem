@@ -1,7 +1,7 @@
 import pip
 
 
-def install(package):
+def install_packages(package):
     pip.main(['install', package])
 
 
@@ -9,7 +9,7 @@ try:
     import random
 except ImportError:
     print('random is not installed, installing it now!')
-    install('random')
+    install_packages('random')
 
 
 def checkSAT(cl, assign):

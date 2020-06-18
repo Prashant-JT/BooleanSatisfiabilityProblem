@@ -1,7 +1,7 @@
 import pip
 
 
-def install(package):
+def install_packages(package):
     pip.main(['install', package])
 
 
@@ -9,7 +9,7 @@ try:
     import itertools
 except ImportError:
     print('itertools is not installed, installing it now!')
-    install('itertools')
+    install_packages('itertools')
 
 
 class BruteForce:
