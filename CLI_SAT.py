@@ -6,7 +6,6 @@ from Functions.ProcessFile import process
 def install_packages(package):
     pip.main(['install', package])
 
-
 try:
     from IPython.display import FileLink
 except ImportError:
