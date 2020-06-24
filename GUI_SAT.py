@@ -145,4 +145,4 @@ class GUI:
 if __name__ == "__main__":
     root = Tk()
     GUI(root)
-    root.mainloop()  # para que una ventana siga en ejecucion tiene que estar en un bucle infinito
+    root.mainloop()
