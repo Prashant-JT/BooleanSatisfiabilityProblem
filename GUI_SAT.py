@@ -39,7 +39,7 @@ class GUI:
         self.entry.place(x=52, y=75)
 
     
-        self.button_compute = Button(master, text="Calcula", command=self.compute)  # cuando se pulse el boton, llama al metodo show
+        self.button_compute = Button(master, text="Calcula", command=self.compute)  # cuando se pulse el boton, llama al metodo compute
         self.button_compute.place(x=370, y=72)
 
         self.label1 = Label(self.master, text="Introduzca una fórmula booleana. Formato: (a+!b+!c),(c+d+!a),(!d+b+a)")
