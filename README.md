@@ -10,4 +10,4 @@ Si al ser ejecutado en Linux, aparece un error, será porque no está instalado 
 
 Para más información, puede consultar: https://developers.google.com/optimization/install/python
 
-
+Para comprender cómo ejecutar los programas CLI y GUI, revise la presentación Power Point (.pptx) desde la diapositiva 22 hasta la 26.
