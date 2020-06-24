@@ -9,3 +9,5 @@ Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build T
 Si al ser ejecutado en Linux, aparece un error, será porque no está instalado el módulo "tkinter", para su instalación, simplemente diríjase a línea de comandos y ejecute: sudo apt-get install python-tk.
 
 Para más información, puede consultar: https://developers.google.com/optimization/install/python
+
+
