@@ -1,13 +1,12 @@
 # BooleanSatisfiabilityProblem
 
-Google Colab Notebook : https://colab.research.google.com/drive/1Ap0F3EcCYUNnRG3oLt9V19gHpuOxo5hh?usp=sharing
+SAT Problem explained (in Spanish): [Theory and algorithms of SAT](https://github.com/Prashant-JT/BooleanSatisfiabilityProblem/blob/master/SAT.pdf)
 
-Para su correspondiente y correcta ejecución en Windows, se requiere tener instalado las herramientas de Microsoft Visual C++. Esto
-es debido a que el solver "ortools" depende de algunas de estas librerías.
-Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": https://visualstudio.microsoft.com/downloads/
+For its corresponding and correct execution in Windows, it is required to have installed the Microsoft Visual C ++ tools. This it is because the "ortools" solver depends on some of these libraries.
+Microsoft Visual C ++ 14.0 is required. Get it with "Microsoft Visual C ++ Build Tools": https://visualstudio.microsoft.com/downloads/
+For more information, you can consult: https://developers.google.com/optimization/install/python
 
-Si al ser ejecutado en Linux, aparece un error, será porque no está instalado el módulo "tkinter", para su instalación, simplemente diríjase a línea de comandos y ejecute: sudo apt-get install python-tk.
+When running on Linux, if an error appears, it will be because the "tkinter" module is not installed, for its installation, simply go to the command line and execute: 
+sudo apt-get install python-tk.
 
-Para más información, puede consultar: https://developers.google.com/optimization/install/python
-
-Para comprender cómo ejecutar los programas CLI y GUI, revise la presentación Power Point (.pptx) desde la diapositiva 22 hasta la 26.
+For a better undersanding on how to execute the programs CLI and GUI, check the [presentation](https://github.com/Prashant-JT/BooleanSatisfiabilityProblem/blob/master/SAT.pptx) slides 22-26.
