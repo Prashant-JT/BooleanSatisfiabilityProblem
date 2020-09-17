@@ -11,4 +11,4 @@ For more information, you can consult: https://developers.google.com/optimizatio
 When running on Linux, if an error appears, it will be because the "tkinter" module is not installed, for its installation, simply go to the command line and execute: 
 sudo apt-get install python-tk.
 
-For a better undersanding on how to execute the programs CLI and GUI, check the [presentation](https://github.com/Prashant-JT/BooleanSatisfiabilityProblem/blob/master/SAT.pptx) slides 22-26.
+For a better understanding on how to execute the programs CLI and GUI, check the [presentation](https://github.com/Prashant-JT/BooleanSatisfiabilityProblem/blob/master/SAT.pptx) slides 22-26.
