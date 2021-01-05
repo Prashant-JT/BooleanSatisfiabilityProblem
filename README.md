@@ -1,5 +1,3 @@
-# BooleanSatisfiabilityProblem
-
 ## Theory and algorithms of SAT
 SAT Problem explained (in Spanish): [Theory and algorithms of SAT](https://github.com/Prashant-JT/BooleanSatisfiabilityProblem/blob/master/SAT.pdf)
 
